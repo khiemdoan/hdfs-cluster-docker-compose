@@ -1,36 +1,51 @@
+volumes:
+  datanode1_data:
+  datanode2_data:
+  datanode3_data:
+
 services:
   namenode:
     image: apache/hadoop:3.4.1
     restart: on-failure
+    container_name: hdfs-namenode
     hostname: namenode
     command: ["hdfs", "namenode"]
     ports:
       - 9870:9870/tcp
     env_file:
       - ./config
-    environment:
-      ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+    volumes:
+      - .data/namenode:/opt/namenode
 
   datanode1:
     image: apache/hadoop:3.4.1
     restart: on-failure
+    container_name: hdfs-datanode1
     hostname: datanode1
     command: ["hdfs", "datanode"]
     env_file:
       - ./config
+    volumes:
+      - .data/datanode1:/opt/data
 
   datanode2:
     image: apache/hadoop:3.4.1
     restart: on-failure
+    container_name: hdfs-datanode2
     hostname: datanode2
     command: ["hdfs", "datanode"]
     env_file:
       - ./config
+    volumes:
+      - .data/datanode2:/opt/data
 
   datanode3:
     image: apache/hadoop:3.4.1
     restart: on-failure
+    container_name: hdfs-datanode3
     hostname: datanode3
     command: ["hdfs", "datanode"]
     env_file:
       - ./config
+    volumes:
+      - .data/datanode3:/opt/data
