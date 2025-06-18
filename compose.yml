@@ -1,9 +1,46 @@
-volumes:
-  datanode1_data:
-  datanode2_data:
-  datanode3_data:
-
 services:
+  zookeeper1:
+    image: zookeeper:3.9.3
+    restart: on-failure
+    container_name: hdfs-zookeeper1
+    hostname: zookeeper1
+    ports:
+      - 2181:2181/tcp
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    volumes:
+      - .data/zookeeper1_data:/data
+      - .data/zookeeper1_log:/datalog
+
+  zookeeper2:
+    image: zookeeper:3.9.3
+    restart: on-failure
+    container_name: hdfs-zookeeper2
+    hostname: zookeeper2
+    ports:
+      - 2182:2181/tcp
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    volumes:
+      - .data/zookeeper2_data:/data
+      - .data/zookeeper2_log:/datalog
+
+  zookeeper3:
+    image: zookeeper:3.9.3
+    restart: on-failure
+    container_name: hdfs-zookeeper3
+    hostname: zookeeper3
+    ports:
+      - 2183:2181/tcp
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    volumes:
+      - .data/zookeeper3_data:/data
+      - .data/zookeeper3_log:/datalog
+
   namenode:
     image: apache/hadoop:3.4.1
     restart: on-failure
