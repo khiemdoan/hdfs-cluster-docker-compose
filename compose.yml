@@ -1,4 +1,184 @@
 services:
+  namenode1:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-namenode1
+    hostname: namenode1
+    command: ["hdfs", "namenode"]
+    ports:
+      - 9871:9870/tcp
+    env_file:
+      - ./config
+    volumes:
+      - .data/namenode1:/opt/namenode
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+      - journalnode1
+      - journalnode2
+      - journalnode3
+
+  namenode2:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-namenode2
+    hostname: namenode2
+    command: ["hdfs", "namenode"]
+    ports:
+      - 9872:9870/tcp
+    env_file:
+      - ./config
+    volumes:
+      - .data/namenode2:/opt/namenode
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+      - journalnode1
+      - journalnode2
+      - journalnode3
+
+  namenode3:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-namenode3
+    hostname: namenode3
+    command: ["hdfs", "namenode"]
+    ports:
+      - 9873:9870/tcp
+    env_file:
+      - ./config
+    volumes:
+      - .data/namenode3:/opt/namenode
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+      - journalnode1
+      - journalnode2
+      - journalnode3
+
+  journalnode1:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-journalnode1
+    hostname: journalnode1
+    command: ["hdfs", "journalnode"]
+    env_file:
+      - ./config
+    volumes:
+      - .data/journalnode1:/opt/journalnode
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+
+  journalnode2:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-journalnode2
+    hostname: journalnode2
+    command: ["hdfs", "journalnode"]
+    env_file:
+      - ./config
+    volumes:
+      - .data/journalnode2:/opt/journalnode
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+
+  journalnode3:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-journalnode3
+    hostname: journalnode3
+    command: ["hdfs", "journalnode"]
+    env_file:
+      - ./config
+    volumes:
+      - .data/journalnode3:/opt/journalnode
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+
+  datanode1:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-datanode1
+    hostname: datanode1
+    command: ["hdfs", "datanode"]
+    env_file:
+      - ./config
+    volumes:
+      - .data/datanode1:/opt/data
+    depends_on:
+      - namenode1
+      - namenode2
+      - namenode3
+
+  datanode2:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-datanode2
+    hostname: datanode2
+    command: ["hdfs", "datanode"]
+    env_file:
+      - ./config
+    volumes:
+      - .data/datanode2:/opt/data
+    depends_on:
+      - namenode1
+      - namenode2
+      - namenode3
+
+  datanode3:
+    image: apache/hadoop:3.4.1
+    restart: on-failure
+    container_name: hdfs-datanode3
+    hostname: datanode3
+    command: ["hdfs", "datanode"]
+    env_file:
+      - ./config
+    volumes:
+      - .data/datanode3:/opt/data
+    depends_on:
+      - namenode1
+      - namenode2
+      - namenode3
+
+  zkfc1:
+    image: apache/hadoop:3.4.1
+    hostname: zkfc1
+    container_name: hdfs-zkfc1
+    command: hdfs zkfc
+    env_file:
+      - ./config
+    depends_on:
+      - namenode1
+
+  zkfc2:
+    image: apache/hadoop:3.4.1
+    hostname: zkfc2
+    container_name: hdfs-zkfc2
+    command: hdfs zkfc
+    env_file:
+      - ./config
+    depends_on:
+      -  namenode2
+
+  zkfc3:
+    image: apache/hadoop:3.4.1
+    hostname: zkfc3
+    container_name: hdfs-zkfc3
+    command: hdfs zkfc
+    env_file:
+      - ./config
+    depends_on:
+      - namenode3
+
   zookeeper1:
     image: zookeeper:3.9.3
     restart: on-failure
@@ -40,49 +220,3 @@ services:
     volumes:
       - .data/zookeeper3_data:/data
       - .data/zookeeper3_log:/datalog
-
-  namenode:
-    image: apache/hadoop:3.4.1
-    restart: on-failure
-    container_name: hdfs-namenode
-    hostname: namenode
-    command: ["hdfs", "namenode"]
-    ports:
-      - 9870:9870/tcp
-    env_file:
-      - ./config
-    volumes:
-      - .data/namenode:/opt/namenode
-
-  datanode1:
-    image: apache/hadoop:3.4.1
-    restart: on-failure
-    container_name: hdfs-datanode1
-    hostname: datanode1
-    command: ["hdfs", "datanode"]
-    env_file:
-      - ./config
-    volumes:
-      - .data/datanode1:/opt/data
-
-  datanode2:
-    image: apache/hadoop:3.4.1
-    restart: on-failure
-    container_name: hdfs-datanode2
-    hostname: datanode2
-    command: ["hdfs", "datanode"]
-    env_file:
-      - ./config
-    volumes:
-      - .data/datanode2:/opt/data
-
-  datanode3:
-    image: apache/hadoop:3.4.1
-    restart: on-failure
-    container_name: hdfs-datanode3
-    hostname: datanode3
-    command: ["hdfs", "datanode"]
-    env_file:
-      - ./config
-    volumes:
-      - .data/datanode3:/opt/data

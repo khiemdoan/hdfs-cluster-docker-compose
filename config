@@ -1,7 +1,22 @@
-CORE-SITE.XML_fs.default.name=hdfs://namenode
-CORE-SITE.XML_fs.defaultFS=hdfs://namenode
+CORE-SITE.XML_fs.default.name=hdfs://hdfs-cluster
+CORE-SITE.XML_fs.defaultFS=hdfs://hdfs-cluster
+CORE-SITE.XML_ha.zookeeper.quorum=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
 
+HDFS-SITE.XML_dfs.nameservices=hdfs-cluster
+HDFS-SITE.XML_dfs.ha.namenodes.hdfs-cluster=nn1,nn2,nn3
+HDFS-SITE.XML_dfs.namenode.rpc-address.hdfs-cluster.nn1=namenode1:8020
+HDFS-SITE.XML_dfs.namenode.rpc-address.hdfs-cluster.nn2=namenode2:8020
+HDFS-SITE.XML_dfs.namenode.rpc-address.hdfs-cluster.nn3=namenode3:8020
+HDFS-SITE.XML_dfs.namenode.http-address.hdfs-cluster.nn1=namenode1:9870
+HDFS-SITE.XML_dfs.namenode.http-address.hdfs-cluster.nn2=namenode2:9870
+HDFS-SITE.XML_dfs.namenode.http-address.hdfs-cluster.nn3=namenode3:9870
 HDFS-SITE.XML_dfs.namenode.name.dir=/opt/namenode
-HDFS-SITE.XML_dfs.namenode.rpc-address=namenode:8020
+HDFS-SITE.XML_dfs.namenode.shared.edits.dir=qjournal://journalnode1:8485;journalnode2:8485;journalnode3:8485/hdfs-cluster
+HDFS-SITE.XML_dfs.journalnode.edits.dir=/opt/journalnode
+# HA automatic failover
+HDFS-SITE.XML_dfs.ha.automatic-failover.enabled=true
+HDFS-SITE.XML_dfs.client.failover.proxy.provider.hdfs-cluster=org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider
+# DataNode configuration
 HDFS-SITE.XML_dfs.datanode.data.dir=/opt/data
-HDFS-SITE.XML_dfs.replication=1
+# Replication factor
+HDFS-SITE.XML_dfs.replication=2
