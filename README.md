@@ -2,8 +2,9 @@
 
 Simple HDFS Cluster with Docker Compose
 
-## Initial Setup
+## Start cluster
 
 ```sh
-docker run -it --rm --env-file ./config -v .data/namenode:/opt/namenode apache/hadoop:3.4.1 hdfs namenode -format
+docker compose up -d
+docker exec -it hdfs-namenode1 hdfs haadmin -transitionToActive nn1 --forcemanual
 ```
